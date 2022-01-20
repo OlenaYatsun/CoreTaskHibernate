@@ -11,6 +11,12 @@ public class Main {
         UserServiceImpl user = new UserServiceImpl();
         user.createUsersTable();
         user.saveUser("Ivan","Pupkin", (byte) 30);
+        user.saveUser("Vasilisa", "Sokolova", (byte) 29);
+        user.saveUser("Bueon", "Hoon", (byte) 31);
+        user.saveUser("Irina", "Pupkina", (byte) 28);
+        user.getAllUsers();
+        user.cleanUsersTable();
+        user.dropUsersTable();
 
-        }
     }
+}
