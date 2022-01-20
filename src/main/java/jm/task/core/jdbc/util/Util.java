@@ -1,5 +1,4 @@
 package jm.task.core.jdbc.util;
-import com.mysql.cj.Session;
 import jm.task.core.jdbc.model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -20,37 +19,27 @@ import java.util.Properties;
 
 
 public class Util {
+    public static SessionFactory getSessionFactory()
+    {
+        Properties prop = new Properties();
+        prop.setProperty("connection.driver_class", "com.mysql.cj.jdbc.Driver");
+        prop.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/task?useSSL=false&serverTimeZone=UTC");
+        prop.setProperty("hibernate.connection.username", "Root1993");
+        prop.setProperty("hibernate.connection.password", "root1993");
+        prop.setProperty("hibernate.dialect","org.hibernate.dialect.MySQL5Dialect");
+        prop.setProperty("hibernate.use_sql_comments", "true");
+        prop.setProperty("hibernate.show_sql", "true");
 
-    private static StandardServiceRegistry standardServiceRegistry;
-    private static SessionFactory sessionFactory;
+        Configuration cfg = new Configuration();
+        cfg.addAnnotatedClass(User.class);
+        cfg.setProperties(prop);
 
-        static {
-           try {
-               StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
+       ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+               .applySettings(cfg.getProperties()).build();
 
-               Map<String, String> dbSettings = new HashMap<>();
-               dbSettings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-               dbSettings.put(Environment.URL, "jdbc:mysql://localhost:3306/task?useSSL=false&serverTimeZone=UTC");
-               dbSettings.put(Environment.USER, "Root1993");
-               dbSettings.put(Environment.PASS, "root1993");
-               dbSettings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
-               dbSettings.put(Environment.SHOW_SQL, "true");
-               dbSettings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-               registryBuilder.applySettings(dbSettings);
-               standardServiceRegistry = registryBuilder.build();
-               MetadataSources source = new MetadataSources(standardServiceRegistry);
-               Metadata metadata = source.getMetadataBuilder().build();
-               sessionFactory = metadata.getSessionFactoryBuilder().build();
-           } catch (HibernateException exception) {
-               System.out.println("Problem creating session factory");
-               exception.printStackTrace();
-           }
-       }
-
-    public static SessionFactory getSessionFactory(){
-        return sessionFactory;
+        return cfg.buildSessionFactory(serviceRegistry);
     }
-
+    
     final static String URL = "jdbc:mysql://localhost:3306/task?useSSL=false&serverTimeZone=UTC";
     final static String USERNAME = "Root1993";
     final static String PASSWORD = "root1993";
