@@ -2,19 +2,11 @@ package jm.task.core.jdbc.util;
 import jm.task.core.jdbc.model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
-import org.hibernate.mapping.MetadataSource;
-import org.hibernate.metamodel.Metadata;
-import org.hibernate.metamodel.MetadataSources;
-import org.hibernate.service.Service;
 import org.hibernate.service.ServiceRegistry;
-import javax.xml.stream.events.StartDocument;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+
 import java.util.Properties;
 
 
@@ -34,12 +26,12 @@ public class Util {
         cfg.addAnnotatedClass(User.class);
         cfg.setProperties(prop);
 
-       ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-               .applySettings(cfg.getProperties()).build();
+        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                .applySettings(cfg.getProperties()).build();
 
         return cfg.buildSessionFactory(serviceRegistry);
     }
-    
+
     final static String URL = "jdbc:mysql://localhost:3306/task?useSSL=false&serverTimeZone=UTC";
     final static String USERNAME = "Root1993";
     final static String PASSWORD = "root1993";
